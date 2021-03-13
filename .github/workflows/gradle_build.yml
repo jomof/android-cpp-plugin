@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         java: [8, 11]
-        gradle: [6.7.1, 6.6.1, 6.5.1, 6.4.1, 6.3, 6.2.2, 6.1.1, 6.0.1]
+        gradle: [6.8.3, 6.7.1, 6.6.1, 6.5.1, 6.4.1, 6.3, 6.2.2, 6.1.1, 6.0.1]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -21,4 +21,4 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Build Plugin
-        run: ./gradlew :plugin:build --stacktrace
+        run: ./gradlew --stacktrace -Pversion=0.1.${{ github.run_number }} assemble :test
