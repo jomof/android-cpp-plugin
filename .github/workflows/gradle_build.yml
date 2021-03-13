@@ -21,4 +21,4 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Build Plugin
-        run: ./gradlew --stacktrace -Pversion=0.1.${{ github.run_number }} -PtargetJvm=${{ matrix.java }} assemble :test
+        run: ./gradlew --stacktrace -Pversion=0.1.${{ github.run_number }} assemble :test
