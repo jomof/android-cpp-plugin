@@ -16,6 +16,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: '11'
+    - name: Setup Gradle Wrapper
+      run: gradle wrapper --gradle-version 6.8.3 --distribution-type bin
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
     - name: Build and Test
       run: ./gradlew --info -Pversion=0.1.${{ github.run_number }} assemble :test
     - name: Create Release
