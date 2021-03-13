@@ -30,7 +30,7 @@ tasks.withType<KotlinCompile>() {
 gradlePlugin {
     plugins {
         create("androidClang") {
-            id = "android-cpp-plugin"
+            id = "cpp-android"
             implementationClass = "com.jomof.androidcppplugin.AndroidCppPlugin"
         }
     }

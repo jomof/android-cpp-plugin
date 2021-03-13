@@ -34,7 +34,11 @@ class BasicTest {
         """.trimIndent())
         buildFile!!.writeText("""
             plugins {
-                id("android-cpp-plugin")
+                id("cpp-library")
+                id("cpp-android")
+            }
+            android {
+                ndkVersion = "23.0.7123448"
             }
             tasks.register("helloWorld") {
                 doLast {
