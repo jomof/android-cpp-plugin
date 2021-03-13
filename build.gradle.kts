@@ -15,6 +15,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test-junit"))
+    testImplementation(gradleTestKit())
+    implementation(gradleApi())
 }
 
 tasks.test {
