@@ -29,6 +29,11 @@ class BasicTest {
 
     @Test
     fun basic() {
+        val source = testProjectDir.root.resolve("src/main/cpp/my-source.cpp")
+        source.absoluteFile.parentFile.mkdirs()
+        source.writeText("""
+            int main() { return 0; }
+        """.trimIndent())
         settingsFile!!.writeText("""
             rootProject.name = "hello-world"
         """.trimIndent())
@@ -40,6 +45,10 @@ class BasicTest {
             android {
                 ndkVersion = "23.0.7123448"
             }
+            library {
+               // targetMachines.add(machines.linux.x86_64)
+                linkage.add(Linkage.SHARED)
+            }
             tasks.register("helloWorld") {
                 doLast {
                     println("Hello world!")
@@ -49,10 +58,10 @@ class BasicTest {
         val result = GradleRunner.create()
             .withProjectDir(testProjectDir.root)
             .withPluginClasspath()
-            .withArguments("helloWorld")
+            .withArguments("assembleDebug")
             .build()
 
-        assertTrue(result.output.contains("Hello world!"))
-        assertEquals(TaskOutcome.SUCCESS, result.task(":helloWorld")?.outcome)
+        //assertTrue(result.output.contains("Hello world!"))
+        assertEquals(TaskOutcome.SUCCESS, result.task(":assembleDebug")?.outcome)
     }
 }
