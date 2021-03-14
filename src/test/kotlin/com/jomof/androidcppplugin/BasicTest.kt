@@ -58,7 +58,8 @@ class BasicTest {
         val result = GradleRunner.create()
             .withProjectDir(testProjectDir.root)
             .withPluginClasspath()
-            .withArguments("assembleDebug")
+            .withArguments("assembleDebug", "--info")
+            .forwardOutput()
             .build()
 
         //assertTrue(result.output.contains("Hello world!"))
