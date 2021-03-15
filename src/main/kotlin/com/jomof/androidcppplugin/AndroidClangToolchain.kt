@@ -13,10 +13,10 @@ import org.gradle.nativeplatform.toolchain.internal.*
 
 class AndroidClangToolchain(
     name: String,
-    private val config: AndroidClangToolchainConfig,
+    private val android: Any,
     private val serviceRegistry: ServiceRegistry,
     buildOperationExecutor: BuildOperationExecutor = serviceRegistry.get(BuildOperationExecutor::class.java),
-    operatingSystem: OperatingSystem = OperatingSystem.LINUX,
+    operatingSystem: OperatingSystem = OperatingSystem.current(),
     fileResolver: FileResolver = serviceRegistry.get(FileResolver::class.java)
 ) : ExtendableToolChain<GccPlatformToolChain>(
     name,
@@ -52,7 +52,7 @@ class AndroidClangToolchain(
 
     override fun select(targetPlatform: NativePlatformInternal): PlatformToolProvider {
         if (!targetPlatform.isAndroid) return notAvailable
-        return createAndroidPlatformToolProvider(serviceRegistry, targetPlatform, config)
+        return createAndroidPlatformToolProvider(serviceRegistry, targetPlatform, createConfig())
     }
 
     override fun select(
@@ -60,7 +60,16 @@ class AndroidClangToolchain(
         targetMachine: NativePlatformInternal
     ): PlatformToolProvider {
         if (!targetMachine.isAndroid) return notAvailable
-        return createAndroidPlatformToolProvider(serviceRegistry, targetMachine, config)
+        return createAndroidPlatformToolProvider(serviceRegistry, targetMachine, createConfig())
+    }
+
+    private fun createConfig() : AndroidClangToolchainConfig {
+        when(android) {
+            is AndroidDsl -> return AndroidClangToolchainConfig(
+                ndkVersion = android.ndkVersion!!
+            )
+            else -> error("${android.javaClass}")
+        }
     }
 
     override fun getTypeName() = NAME

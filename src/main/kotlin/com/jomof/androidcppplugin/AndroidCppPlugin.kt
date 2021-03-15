@@ -30,8 +30,8 @@ class AndroidCppPlugin @Inject constructor(
     override fun apply(project: Project) {
         project.pluginManager.apply(NativeComponentPlugin::class.java)
         project.extensions.findByName("library")?.extendForAndroid(project)
+        val pluginExtension = AndroidDsl()
         if (project.extensions.findByName("android") == null) {
-            val pluginExtension = AndroidDsl()
             project.extensions.add(AndroidDsl::class.java, "android", pluginExtension)
         }
         //error("${library.javaClass}")
@@ -39,16 +39,11 @@ class AndroidCppPlugin @Inject constructor(
         val toolChainRegistry = project.extensions.getByType(NativeToolChainRegistry::class.java)
 
         toolChainRegistry.registerFactory(AndroidClang::class.java) { name ->
-            val ndkVersion : String? =
-                when(val android = project.extensions.getByName("android")) {
-                    null -> null
-                    is AndroidDsl -> android.ndkVersion
-                    else -> error("${android.javaClass}")
-                }
-            val config = AndroidClangToolchainConfig(
-                ndkVersion = ndkVersion
-            )
-            AndroidClangToolchain(name, config, serviceRegistry)
+            val android = project.extensions.getByName("android")!!
+            AndroidClangToolchain(
+                name,
+                android,
+                serviceRegistry)
         }
         toolChainRegistry.register(AndroidClangToolchain.NAME, AndroidClang::class.java)
     }
