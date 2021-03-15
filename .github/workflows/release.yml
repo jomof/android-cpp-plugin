@@ -23,7 +23,7 @@ jobs:
     - name: Install NDK
       run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;23.0.7123448" --sdk_root=${ANDROID_SDK_ROOT} --channel=3
     - name: Build and Test
-      run: ./gradlew --info -Pversion=0.1.${{ github.run_number }} -PtestNdkVersion=23.0.7123448 assemble :test
+      run: ./gradlew --info -Pversion=0.1.${{ github.run_number }} assemble :test
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
