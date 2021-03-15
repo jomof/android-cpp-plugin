@@ -23,7 +23,7 @@ class BasicTest {
     fun setup() {
         settingsFile = testProjectDir.newFile("settings.gradle.kts")
         buildFile = testProjectDir.newFile("build.gradle.kts")
-        testNdkVersion = System.getenv("TEST_NDK_VERSION") ?: DEFAULT_NDK_VERSION
+        testNdkVersion = System.getProperty("testNdkVersion") ?: DEFAULT_NDK_VERSION
     }
 
     @Test
@@ -36,6 +36,7 @@ class BasicTest {
         settingsFile!!.writeText("""
             rootProject.name = "hello-world"
         """.trimIndent())
+        val dollar = "$"
         buildFile!!.writeText("""
             plugins {
                 id("cpp-library")
@@ -45,6 +46,8 @@ class BasicTest {
                 ndkVersion = "23.0.7123448"
             }
             library {
+//                error("${dollar}{machines.javaClass}")
+ //               targetMachines.add(machines.os("aarch64-linux-android21"))
                 targetMachines.add(machines.linux.architecture("aarch64-linux-android21"))
                 targetMachines.add(machines.macOS.architecture("aarch64-linux-android21"))
                 //targetMachines.add(machines.macOS.x86_64)
