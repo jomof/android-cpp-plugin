@@ -4,7 +4,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.internal.attributes.ImmutableAttributesFactory
 import org.gradle.internal.service.ServiceRegistry
-import org.gradle.language.cpp.CppLibrary
 import org.gradle.language.cpp.internal.DefaultCppLibrary
 import org.gradle.language.nativeplatform.internal.toolchains.ToolChainSelector
 import org.gradle.nativeplatform.TargetMachineFactory
@@ -22,10 +21,12 @@ class AndroidCppPlugin @Inject constructor(
     override fun apply(project: Project) {
         project.pluginManager.apply(NativeComponentPlugin::class.java)
         project.extensions.findByName("library")?.extendForAndroid(project)
-        val pluginExtension = AndroidDsl()
+        val androidExtension = AndroidDsl()
         if (project.extensions.findByName("android") == null) {
-            project.extensions.add(AndroidDsl::class.java, "android", pluginExtension)
+            project.extensions.add(AndroidDsl::class.java, "android", androidExtension)
         }
+        val ndkExtension = NdkDsl(targetMachineFactory)
+        project.extensions.add(NdkDsl::class.java, "ndk", ndkExtension)
         //error("${library.javaClass}")
         //setupWith(project)
         val toolChainRegistry = project.extensions.getByType(NativeToolChainRegistry::class.java)
