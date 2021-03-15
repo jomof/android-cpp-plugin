@@ -26,4 +26,4 @@ jobs:
       - name: Set NDK Default Version
         run: echo ${{ matrix.ndk }}> ${HOME}/test-ndk-version.txt
       - name: Build Plugin
-        run: ./gradlew --info --stacktrace -Pversion=0.1.${{ github.run_number }} -PtestNdkVersion=${{ matrix.ndk }} assemble :test
+        run: ./gradlew --info --stacktrace -Pversion=0.1.${{ github.run_number }} assemble :test
