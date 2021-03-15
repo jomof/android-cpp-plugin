@@ -43,6 +43,7 @@ fun createAndroidPlatformToolProvider(
     val abi = createNdkAbiModel(
         targetMachine,
         toolchainConfig)
+    val ndkVersionNumber = VersionNumber.parse(toolchainConfig.ndkVersion)
     val buildOperationExecutor = serviceRegistry.get(BuildOperationExecutor::class.java)
     val compilerOutputFileNamingSchemeFactory = serviceRegistry.get(CompilerOutputFileNamingSchemeFactory::class.java)
     val workerLeaseService = serviceRegistry.get(WorkerLeaseService::class.java)
@@ -143,10 +144,19 @@ fun createAndroidPlatformToolProvider(
                 workerLeaseService
             )
 
-            return OutputCleaningCompiler<CppCompileSpec>(
+            val outputCleaning = OutputCleaningCompiler<CppCompileSpec>(
                 cppCompiler,
                 compilerOutputFileNamingSchemeFactory,
                 objectFileExtension
+            )
+
+            return VersionAwareCompiler(
+                outputCleaning,
+                DefaultCompilerVersion(
+                    ToolType.CPP_COMPILER.toolName,
+                    "Google",
+                    ndkVersionNumber
+                )
             )
         }
 
@@ -168,9 +178,9 @@ fun createAndroidPlatformToolProvider(
             return VersionAwareCompiler(
                 linker,
                 DefaultCompilerVersion(
-                    "Linker",
+                    ToolType.LINKER.toolName,
                     "Google",
-                    VersionNumber(1, 0, 0, null)
+                    ndkVersionNumber
                 )
             )
         }

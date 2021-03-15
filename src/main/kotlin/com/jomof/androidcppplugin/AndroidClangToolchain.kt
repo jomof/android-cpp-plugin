@@ -26,32 +26,11 @@ class AndroidClangToolchain(
 ), AndroidClang {
     companion object {
         const val NAME = "Android Clang"
-        val notAvailable = object : PlatformToolProvider {
-            override fun isAvailable() = false
-            override fun isSupported() = false
-            override fun explain(visitor: DiagnosticsVisitor) {
-
-            }
-            override fun <T : CompileSpec?> newCompiler(spec: Class<T>?) = error("Not available")
-            override fun <T : Any?> get(toolType: Class<T>?) = error("Not available")
-            override fun getObjectFileExtension() = error("Not available")
-            override fun getExecutableName(executablePath: String?) = error("Not available")
-            override fun getSharedLibraryName(libraryPath: String?) = error("Not available")
-            override fun producesImportLibrary() = error("Not available")
-            override fun requiresDebugBinaryStripping() = error("Not available")
-            override fun getImportLibraryName(libraryPath: String?) = error("Not available")
-            override fun getSharedLibraryLinkFileName(libraryPath: String?) = error("Not available")
-            override fun getStaticLibraryName(libraryPath: String?) = error("Not available")
-            override fun getExecutableSymbolFileName(executablePath: String?) = error("Not available")
-            override fun getLibrarySymbolFileName(libraryPath: String?) = error("Not available")
-            override fun getCompilerMetadata(compilerType: ToolType?) = error("Not available")
-            override fun getSystemLibraries(compilerType: ToolType?) = error("Not available")
-            override fun locateTool(compilerType: ToolType?) = error("Not available")
-        }
     }
 
     override fun select(targetPlatform: NativePlatformInternal): PlatformToolProvider {
-        if (!targetPlatform.isAndroid) return notAvailable
+        if (!targetPlatform.isAndroid)
+            return UnsupportedPlatformToolProvider(targetPlatform.operatingSystem, "Was not Android")
         return createAndroidPlatformToolProvider(serviceRegistry, targetPlatform, createConfig())
     }
 
@@ -59,7 +38,8 @@ class AndroidClangToolchain(
         sourceLanguage: NativeLanguage,
         targetMachine: NativePlatformInternal
     ): PlatformToolProvider {
-        if (!targetMachine.isAndroid) return notAvailable
+        if (!targetMachine.isAndroid)
+            return UnsupportedPlatformToolProvider(targetMachine.operatingSystem, "Was not Android")
         return createAndroidPlatformToolProvider(serviceRegistry, targetMachine, createConfig())
     }
 

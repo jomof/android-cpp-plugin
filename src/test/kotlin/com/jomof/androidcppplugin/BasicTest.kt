@@ -67,7 +67,16 @@ class BasicTest {
                 .withDebug(true)
                 .withProjectDir(testProjectDir.root)
                 .withPluginClasspath()
-                .withArguments("assemble", "--info", "--stacktrace")
+                .withArguments("assemble", "--info", "--stacktrace", "--build-cache")
+                .forwardOutput()
+                .build()
+
+            println("-------------------------")
+            GradleRunner.create()
+                .withDebug(true)
+                .withProjectDir(testProjectDir.root)
+                .withPluginClasspath()
+                .withArguments("clean", "assemble", "--info", "--stacktrace", "--build-cache")
                 .forwardOutput()
                 .build()
 

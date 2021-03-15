@@ -5,19 +5,11 @@ import org.gradle.api.Project
 import org.gradle.api.internal.attributes.ImmutableAttributesFactory
 import org.gradle.internal.service.ServiceRegistry
 import org.gradle.language.cpp.CppLibrary
-import org.gradle.language.cpp.CppPlatform
 import org.gradle.language.cpp.internal.DefaultCppLibrary
-import org.gradle.language.cpp.internal.DefaultCppPlatform
-import org.gradle.language.cpp.internal.NativeVariantIdentity
-import org.gradle.language.nativeplatform.internal.Dimensions
 import org.gradle.language.nativeplatform.internal.toolchains.ToolChainSelector
-import org.gradle.nativeplatform.Linkage
 import org.gradle.nativeplatform.TargetMachineFactory
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.gradle.nativeplatform.plugins.NativeComponentPlugin
 import org.gradle.nativeplatform.toolchain.NativeToolChainRegistry
-import org.gradle.nativeplatform.toolchain.internal.NativeToolChainRegistryInternal
-import java.util.concurrent.Callable
 import javax.inject.Inject
 
 @Suppress("unused")
@@ -39,7 +31,7 @@ class AndroidCppPlugin @Inject constructor(
         val toolChainRegistry = project.extensions.getByType(NativeToolChainRegistry::class.java)
 
         toolChainRegistry.registerFactory(AndroidClang::class.java) { name ->
-            val android = project.extensions.getByName("android")!!
+            val android = project.extensions.getByName("android")
             AndroidClangToolchain(
                 name,
                 android,
@@ -50,12 +42,12 @@ class AndroidCppPlugin @Inject constructor(
 
     private fun Any.extendForAndroid(project: Project) {
         when(this) {
-            is DefaultCppLibrary -> extendForAndroid(project)
+            is DefaultCppLibrary -> extendForAndroid()
             else -> error("Don't know how to extend $javaClass")
         }
     }
 
-    private fun DefaultCppLibrary.extendForAndroid(project: Project) {
+    private fun DefaultCppLibrary.extendForAndroid() {
 //        project.afterEvaluate {
 //            Dimensions.libraryVariants(
 //                baseName,
@@ -90,22 +82,5 @@ class AndroidCppPlugin @Inject constructor(
 //                }
 //            }
 //        }
-    }
-
-    private fun setupWith(project: Project) {
-        project.beforeEvaluate {
-            project.extensions.configure(CppLibrary::class.java) { cppLibrary ->
-                listOf("x86", "x86_64")
-                    .map { abi -> AndroidInfo(abi) }
-                    .map {
-                        targetMachineFactory
-                            .linux
-                            .architecture(it.platformName)
-                    }.forEach {
-                        error(it)
-                        cppLibrary.targetMachines.add(it)
-                    }
-            }
-        }
     }
 }
