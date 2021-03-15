@@ -23,7 +23,13 @@ class BasicTest {
     fun setup() {
         settingsFile = testProjectDir.newFile("settings.gradle.kts")
         buildFile = testProjectDir.newFile("build.gradle.kts")
-        testNdkVersion = System.getProperty("testNdkVersion") ?: DEFAULT_NDK_VERSION
+        val userHomeTestNdkVersion = File(System.getProperty("user.home")).resolve("test-ndk-version.txt")
+        testNdkVersion = if (userHomeTestNdkVersion.isFile) {
+                userHomeTestNdkVersion.readText().trim()
+            } else {
+                println("Using default NDK version")
+                DEFAULT_NDK_VERSION
+        }
     }
 
     @Test

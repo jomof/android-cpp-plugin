@@ -20,7 +20,6 @@ dependencies {
 }
 
 tasks.test {
-    systemProperty("testNdkVersion", project.properties["testNdkVersion"])
     useJUnit()
 }
 
