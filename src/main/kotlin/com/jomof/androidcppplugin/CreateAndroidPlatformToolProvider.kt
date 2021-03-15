@@ -40,7 +40,9 @@ fun createAndroidPlatformToolProvider(
     targetMachine: NativePlatformInternal,
     toolchainConfig: AndroidClangToolchainConfig) : PlatformToolProvider {
 
-    val abi = createNdkAbiModel(targetMachine.architecture.name, toolchainConfig)
+    val abi = createNdkAbiModel(
+        targetMachine,
+        toolchainConfig)
     val buildOperationExecutor = serviceRegistry.get(BuildOperationExecutor::class.java)
     val compilerOutputFileNamingSchemeFactory = serviceRegistry.get(CompilerOutputFileNamingSchemeFactory::class.java)
     val workerLeaseService = serviceRegistry.get(WorkerLeaseService::class.java)
