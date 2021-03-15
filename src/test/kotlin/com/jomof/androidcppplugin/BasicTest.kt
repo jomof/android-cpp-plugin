@@ -1,7 +1,6 @@
 package com.jomof.androidcppplugin
 
 import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Before
@@ -9,10 +8,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
-import java.io.IOException
-
-
-
 
 class BasicTest {
     @Rule
@@ -46,23 +41,25 @@ class BasicTest {
                 ndkVersion = "23.0.7123448"
             }
             library {
-               // targetMachines.add(machines.linux.x86_64)
+                targetMachines.add(machines.linux.architecture("aarch64-linux-android21"))
+                targetMachines.add(machines.macOS.architecture("aarch64-linux-android21"))
+                //targetMachines.add(machines.macOS.x86_64)
                 linkage.add(Linkage.SHARED)
             }
-            tasks.register("helloWorld") {
-                doLast {
-                    println("Hello world!")
-                }
-            }
         """.trimIndent())
-        val result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
-            .withPluginClasspath()
-            .withArguments("assembleDebug", "--info")
-            .forwardOutput()
-            .build()
+        try {
+            val result = GradleRunner.create()
+                .withDebug(true)
+                .withProjectDir(testProjectDir.root)
+                .withPluginClasspath()
+                .withArguments("assemble", "--info", "--stacktrace")
+                .forwardOutput()
+                .build()
 
-        //assertTrue(result.output.contains("Hello world!"))
-        assertEquals(TaskOutcome.SUCCESS, result.task(":assembleDebug")?.outcome)
+            //assertTrue(result.output.contains("Hello world!"))
+            assertEquals(TaskOutcome.SUCCESS, result.task(":assemble")?.outcome)
+        } catch(e : Throwable) {
+            throw(e)
+        }
     }
 }
