@@ -1,5 +1,6 @@
 package com.jomof.androidcppplugin
 
+import com.jomof.androidcppplugin.ndk.DEFAULT_NDK_VERSION
 import junit.framework.Assert.assertEquals
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -10,16 +11,19 @@ import org.junit.rules.TemporaryFolder
 import java.io.File
 
 class BasicTest {
+
     @Rule
     @JvmField
     val testProjectDir = TemporaryFolder()
     private var settingsFile: File? = null
     private var buildFile: File? = null
+    private var testNdkVersion: String? = null
 
     @Before
     fun setup() {
         settingsFile = testProjectDir.newFile("settings.gradle.kts")
         buildFile = testProjectDir.newFile("build.gradle.kts")
+        testNdkVersion = System.getenv("TEST_NDK_VERSION") ?: DEFAULT_NDK_VERSION
     }
 
     @Test

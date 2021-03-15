@@ -3,7 +3,7 @@ package com.jomof.androidcppplugin.ndk
 import com.jomof.androidcppplugin.AndroidClangToolchainConfig
 import org.gradle.nativeplatform.platform.internal.NativePlatformInternal
 import java.io.File
-private const val DEFAULT_NDK_VERSION = "23.0.7123448"
+const val DEFAULT_NDK_VERSION = "23.0.7123448"
 
 fun createNdkVersionModel(
     targetMachine: NativePlatformInternal,
