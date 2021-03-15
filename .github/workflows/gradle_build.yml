@@ -24,6 +24,4 @@ jobs:
       - name: Install NDK
         run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;${{ matrix.ndk }}" --sdk_root=${ANDROID_SDK_ROOT} --channel=3
       - name: Build Plugin
-        run: ./gradlew --info --stacktrace -Pversion=0.1.${{ github.run_number }} assemble :test
-        env:
-          TEST_NDK_VERSION: ${{ matrix.ndk }}
+        run: ./gradlew --info --stacktrace -Pversion=0.1.${{ github.run_number }} -PtestNdkVersion=${{ matrix.ndk }} assemble :test
