@@ -25,9 +25,10 @@ class BasicTest {
         buildFile = testProjectDir.newFile("build.gradle.kts")
         val userHomeTestNdkVersion = File(System.getProperty("user.home")).resolve("test-ndk-version.txt")
         testNdkVersion = if (userHomeTestNdkVersion.isFile) {
-                println("TEST-NDK: Using NDK version from $userHomeTestNdkVersion")
-                userHomeTestNdkVersion.readText().trim()
-            } else {
+            val result = userHomeTestNdkVersion.readText().trim()
+            println("TEST-NDK: Using NDK version from $userHomeTestNdkVersion: [$result]")
+            result
+        } else {
                 println("TEST-NDK: Using default NDK version")
                 DEFAULT_NDK_VERSION
         }
