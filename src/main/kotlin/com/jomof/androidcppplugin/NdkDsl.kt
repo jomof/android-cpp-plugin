@@ -2,6 +2,7 @@ package com.jomof.androidcppplugin
 
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.nativeplatform.TargetMachine
+import org.gradle.nativeplatform.TargetMachineBuilder
 import org.gradle.nativeplatform.TargetMachineFactory
 
 class NdkDsl(private val targetMachineFactory : TargetMachineFactory) {
@@ -14,6 +15,6 @@ class NdkDsl(private val targetMachineFactory : TargetMachineFactory) {
             host.isMacOsX -> targetMachineFactory.macOS
             else -> error(host.familyName)
         }
-        return hostTarget.architecture(target)
+        return NdkTargetMachine(hostTarget).architecture(target)
     }
 }
