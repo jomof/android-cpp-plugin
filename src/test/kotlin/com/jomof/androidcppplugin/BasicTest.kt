@@ -54,14 +54,8 @@ class BasicTest {
                 ndkVersion = "$testNdkVersion"
             }
             library {
-                val ndkMachine = ndk.target("aarch64-linux-android21")
-//                error("${dollar}{ndkMachine.javaClass}")
- //               targetMachines.add(machines.os("aarch64-linux-android21"))
- 
-                //targetMachines.add(machines.linux.architecture("aarch64-linux-android21"))
-                targetMachines.add(ndkMachine)
-    //            targetMachines.add(machines.macOS.architecture("aarch64-linux-android21"))
-                //targetMachines.add(machines.macOS.x86_64)
+                targetMachines.add(ndk.target("aarch64-linux-android21"))
+    //            targetMachines.add(machines.macOS.x86_64)
                 linkage.add(Linkage.SHARED)
             }
         """.trimIndent())
