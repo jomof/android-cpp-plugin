@@ -19,8 +19,6 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: Setup Gradle Wrapper
         run: gradle wrapper --gradle-version ${{ matrix.gradle }} --distribution-type bin
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
       - name: Set NDK Default Version
         run: echo ${{ matrix.ndk }}> ${HOME}/test-ndk-version.txt
       - name: Build Plugin
