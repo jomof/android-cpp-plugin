@@ -41,29 +41,6 @@ data class NdkTargetCoordinate(
             PLATFORM(::tryParsePlatform),
             NDK(::tryParseNdk)
         }
-        private fun tryParseArch(text : String) =
-            when(text) {
-                "i686",
-                "x86_64",
-                "armv7",
-                "aarch64" -> text
-                else -> null
-            }
-        private fun tryParseFamily(text : String) =
-            when(text) {
-                "linux" -> "linux"
-                else -> null
-            }
-        private fun tryParsePlatform(text : String) =
-            when {
-                text.startsWith("android") -> text
-                else -> null
-            }
-        private fun tryParseNdk(text : String) =
-            when {
-                text.startsWith("ndk") -> text.substring(3)
-                else -> null
-            }
 
         fun parse(text : String) : NdkTargetCoordinate {
             val segments = text.split("-")
@@ -88,9 +65,26 @@ data class NdkTargetCoordinate(
     }
 }
 
-/*
-arm64-v8a       aarch64-linux-android21
-armeabi-v7a     armv7-linux-androideabi19
-x86             i686-linux-android19
-x86_64          x86_64-linux-android21
-*/
+private fun tryParseArch(text : String) =
+    when(text) {
+        "i686",
+        "x86_64",
+        "armv7",
+        "aarch64" -> text
+        else -> null
+    }
+private fun tryParseFamily(text : String) =
+    when(text) {
+        "linux" -> "linux"
+        else -> null
+    }
+private fun tryParsePlatform(text : String) =
+    when {
+        text.startsWith("android") -> text
+        else -> null
+    }
+private fun tryParseNdk(text : String) =
+    when {
+        text.startsWith("ndk") -> text.substring(3)
+        else -> null
+    }
