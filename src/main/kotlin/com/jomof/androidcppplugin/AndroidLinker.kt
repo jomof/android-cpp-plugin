@@ -50,7 +50,7 @@ internal class GccLinker(
         override fun transform(spec: LinkerSpec?): List<String> {
             val args: MutableList<String> = ArrayList()
             args.addAll(spec!!.systemArgs)
-            args.add("--target=${abi.target}")
+            args.add("--target=${abi.targetCoordinate.clangTarget}")
             if (spec is SharedLibraryLinkerSpec) {
                 args.add("-shared")
                 maybeSetInstallName(spec, args)

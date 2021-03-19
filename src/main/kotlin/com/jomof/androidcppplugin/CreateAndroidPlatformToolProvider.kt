@@ -1,5 +1,6 @@
 package com.jomof.androidcppplugin
 
+import com.jomof.androidcppplugin.ndk.NdkTargetCoordinate
 import com.jomof.androidcppplugin.ndk.createNdkAbiModel
 import org.gradle.internal.logging.text.DiagnosticsVisitor
 import org.gradle.internal.operations.BuildOperationExecutor
@@ -39,10 +40,8 @@ fun createAndroidPlatformToolProvider(
     serviceRegistry: ServiceRegistry,
     targetMachine: NativePlatformInternal,
     toolchainConfig: AndroidClangToolchainConfig) : PlatformToolProvider {
-
-    val abi = createNdkAbiModel(
-        targetMachine,
-        toolchainConfig)
+    val targetCoordinate = NdkTargetCoordinate.parse(targetMachine.architecture.name)
+    val abi = createNdkAbiModel(targetCoordinate)
     val ndkVersionNumber = VersionNumber.parse(toolchainConfig.ndkVersion)
     val buildOperationExecutor = serviceRegistry.get(BuildOperationExecutor::class.java)
     val compilerOutputFileNamingSchemeFactory = serviceRegistry.get(CompilerOutputFileNamingSchemeFactory::class.java)

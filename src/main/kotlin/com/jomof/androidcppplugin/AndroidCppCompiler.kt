@@ -47,7 +47,7 @@ internal abstract class GccCompilerArgsTransformer<T : NativeCompileSpec?>(val a
     ArgsTransformer<T> {
     override fun transform(spec: T): List<String?> {
         val args: MutableList<String?> = mutableListOf()
-        args.add("--target=${abi.target}")
+        args.add("--target=${abi.targetCoordinate.clangTarget}")
         addToolSpecificArgs(spec, args)
         addMacroArgs(spec, args)
         addUserArgs(spec, args)

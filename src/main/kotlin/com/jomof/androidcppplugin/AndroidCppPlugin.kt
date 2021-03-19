@@ -3,6 +3,7 @@ package com.jomof.androidcppplugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.internal.attributes.ImmutableAttributesFactory
+import org.gradle.api.model.ObjectFactory
 import org.gradle.internal.service.ServiceRegistry
 import org.gradle.language.cpp.internal.DefaultCppLibrary
 import org.gradle.language.nativeplatform.internal.toolchains.ToolChainSelector
@@ -13,6 +14,7 @@ import javax.inject.Inject
 
 @Suppress("unused")
 class AndroidCppPlugin @Inject constructor(
+    private val objectFactory: ObjectFactory,
     private val serviceRegistry: ServiceRegistry,
     private val targetMachineFactory: TargetMachineFactory,
     private val attributesFactory: ImmutableAttributesFactory,
@@ -25,7 +27,7 @@ class AndroidCppPlugin @Inject constructor(
         if (project.extensions.findByName("android") == null) {
             project.extensions.add(AndroidDsl::class.java, "android", androidExtension)
         }
-        val ndkExtension = NdkDsl(targetMachineFactory)
+        val ndkExtension = NdkDsl(objectFactory, androidExtension)
         project.extensions.add(NdkDsl::class.java, "ndk", ndkExtension)
         //error("${library.javaClass}")
         //setupWith(project)
