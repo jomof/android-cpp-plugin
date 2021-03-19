@@ -11,6 +11,8 @@ jobs:
         gradle: [6.8.3, 6.7.1, 6.6.1, 6.5.1]
         ndk: [23.0.7123448, 22.0.7026061, 21.4.7075529, 20.1.5948944, 19.2.5345600]
     steps:
+      - name: Env
+        run: printenv
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set up JDK ${{ matrix.java }}
