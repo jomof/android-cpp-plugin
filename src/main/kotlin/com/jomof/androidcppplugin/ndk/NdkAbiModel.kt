@@ -1,7 +1,7 @@
 package com.jomof.androidcppplugin.ndk
 
-//
+
 data class NdkAbiModel(
-    val target : String,
+    val targetCoordinate : NdkTargetCoordinate,
     val ndkVersionModel : NdkVersionModel
 )

@@ -1,20 +1,13 @@
 package com.jomof.androidcppplugin
 
-import org.gradle.internal.os.OperatingSystem
+import com.jomof.androidcppplugin.ndk.createAndroidClangToolchainConfig
+import org.gradle.api.model.ObjectFactory
 import org.gradle.nativeplatform.TargetMachine
-import org.gradle.nativeplatform.TargetMachineBuilder
-import org.gradle.nativeplatform.TargetMachineFactory
 
-class NdkDsl(private val targetMachineFactory : TargetMachineFactory) {
+class NdkDsl(private val objectFactory: ObjectFactory, private val android : Any) {
     @Suppress("unused")
     fun target(target : String) : TargetMachine {
-        val host = OperatingSystem.current()
-        val hostTarget = when {
-            host.isLinux -> targetMachineFactory.linux
-            host.isWindows -> targetMachineFactory.windows
-            host.isMacOsX -> targetMachineFactory.macOS
-            else -> error(host.familyName)
-        }
-        return NdkTargetMachine(hostTarget).architecture(target)
+        val config = createAndroidClangToolchainConfig(android)
+        return NdkTargetMachineBuilder(objectFactory, config).architecture(target)
     }
 }
