@@ -35,11 +35,18 @@ data class NdkTargetCoordinate(
         return sb.toString()
     }
     companion object {
-        private enum class SegmentType(val tryParse : (String) -> String?) {
-            ARCH(::tryParseArch),
-            FAMILY(::tryParseFamily),
-            PLATFORM(::tryParsePlatform),
-            NDK(::tryParseNdk)
+        private enum class SegmentType {
+            ARCH,
+            FAMILY,
+            PLATFORM,
+            NDK;
+            fun tryParse(text : String) =
+                when(this) {
+                    ARCH -> tryParseArch(text)
+                    FAMILY -> tryParseFamily(text)
+                    PLATFORM -> tryParsePlatform(text)
+                    NDK -> tryParseNdk(text)
+                }
         }
 
         fun parse(text : String) : NdkTargetCoordinate {
