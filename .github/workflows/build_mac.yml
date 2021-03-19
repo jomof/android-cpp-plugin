@@ -1,4 +1,4 @@
-name: Gradle Build (Ubuntu)
+name: Gradle Build (Mac)
 
 on: [push]
 
