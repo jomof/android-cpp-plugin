@@ -29,7 +29,7 @@ class BasicTest {
             println("TEST-NDK: Using NDK version from $userHomeTestNdkVersion: [$result]")
             result
         } else {
-                println("TEST-NDK: Using default NDK version")
+                println("TEST-NDK: Using default NDK version because '$userHomeTestNdkVersion' didn't exist")
                 DEFAULT_NDK_VERSION
         }
     }
