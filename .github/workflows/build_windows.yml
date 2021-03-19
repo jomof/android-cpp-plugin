@@ -21,6 +21,6 @@ jobs:
       - name: Setup Gradle Wrapper
         run: gradle wrapper --gradle-version ${{ matrix.gradle }} --distribution-type bin
       - name: Set NDK Default Version
-        run: echo ${{ matrix.ndk }}> ${HOME}/test-ndk-version.txt
+        run: echo ${{ matrix.ndk }}> ${HOME}\test-ndk-version.txt
       - name: Build Plugin
-        run: ./gradlew --info --stacktrace assemble :test
+        run: gradlew --info --stacktrace assemble :test
