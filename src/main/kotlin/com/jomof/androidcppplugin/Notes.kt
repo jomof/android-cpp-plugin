@@ -38,7 +38,7 @@ import org.gradle.nativeplatform.TargetMachine
  * operatingSystemFamily.name. This seems to indicate that [CppLibraryPlugin] is
  * not meant to for cross compilation.
  */
-private val cppLibraryPlugin : CppLibraryPlugin? = null
+private val cppLibraryPlugin : CppLibraryPlugin get() { error("don't") }
 
 
 private val targetMachine: TargetMachine get() { error("don't") }
@@ -47,15 +47,15 @@ private val targetMachine: TargetMachine get() { error("don't") }
  * The 'library' stanza in the DSL. Typically implemented by [DefaultCppLibrary]
  * which extends [DefaultCppComponent].
  */
-private val cppLibrary : CppLibrary? = null
+private val cppLibrary : CppLibrary  get() { error("don't") }
 
 /**
  *
  */
-private val cppBasePlugin : CppBasePlugin? = null
+private val cppBasePlugin : CppBasePlugin get() { error("don't") }
 
 
-private val nativeVariantIdentity : NativeVariantIdentity? = null
+private val nativeVariantIdentity : NativeVariantIdentity get() { error("don't") }
 
 
 
