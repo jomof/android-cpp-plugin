@@ -1,0 +1,25 @@
+name: Gradle Build (Mac)
+
+on: [push]
+
+jobs:
+  Build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        java: [8, 11]
+        gradle: [6.8.3, 6.7.1, 6.6.1, 6.5.1]
+        ndk: [22.0.7026061]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Setup Gradle Wrapper
+        run: gradle wrapper --gradle-version ${{ matrix.gradle }} --distribution-type bin
+      - name: Set NDK Default Version
+        run: echo ${{ matrix.ndk }}> ${HOME}/test-ndk-version.txt
+      - name: Build Plugin
+        run: ./gradlew --info --stacktrace assemble :test
